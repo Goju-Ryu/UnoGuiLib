@@ -30,4 +30,7 @@ internal fun Buttons(vararg buttonNames: String, buttonOnClick: ButtonOnClick = 
     }
 }
 
-typealias ButtonOnClick = (name: String) -> Unit
+/**
+ * A special onClickListener for buttons that takes the name of a button as an argument
+ */
+internal typealias ButtonOnClick = (name: String) -> Unit
