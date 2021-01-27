@@ -1,4 +1,3 @@
-import kotlinx.coroutines.*
 import ui.Game
 
 /**
@@ -7,4 +6,8 @@ import ui.Game
 suspend fun main() {
     val game = Game()
     game.startGui()
+
+    println(
+        game.buttonInput("Choose a greeting","Hej", "Olloh")
+    )
 }
