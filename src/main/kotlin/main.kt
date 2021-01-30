@@ -1,13 +1,18 @@
 import ui.Game
 
 /**
- * This method exists for the ease of development should not be used outside of testing purposes
+ * This method exists for ease of development and should not be used outside of testing purposes
  */
-suspend fun main() {
+fun main() {
     val game = Game()
     game.startGui()
 
-    println(
-        game.buttonInput("Choose a greeting","Hej", "Olloh")
-    )
+    val choice = game.buttonInput("Choose a greeting","Hej", "Olloh")
+    println(choice)
+    game.showMessage("$choice, World!\n\nmulti line\n       string")
+    Thread.sleep(2000)
+
+
+    game.buttonInput("continue", "OK")
+    game.eraseMessage()
 }

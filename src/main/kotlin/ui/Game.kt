@@ -1,9 +1,8 @@
 package ui
 
 import androidx.compose.desktop.Window
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.AmbientContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -12,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.*
 import kotlin.concurrent.thread
@@ -32,16 +32,12 @@ class Game {
     /**
      * This String is the message that will be displayed on the board
      */
-    private val messageState = mutableStateOf("Hello")
+    private val messageState: MutableState<(@Composable () -> Unit)?> = mutableStateOf(null)
 
     /**
      * This State contains the composable representing the currently visible inputmethod
      */
-    private val inputState: MutableState<(@Composable () -> Unit)?> = mutableStateOf({
-        Buttons("Hi", "Hello", "Hola", "Start Game") {
-            messageState.value = it; if (it == "Start Game") startGame()
-        }
-    })
+    private val inputState: MutableState<(@Composable () -> Unit)?> = mutableStateOf( null )
 
     /**
      * This function starts the gui window and allows the game to begin
@@ -50,16 +46,14 @@ class Game {
         title = "My Uno Game",
         size = IntSize(1280, 1024)
     ) {
-
         val hasStarted by remember { hasStartedState }
+        val messageArea by remember { messageState }
+        val inputArea by remember { inputState }
 
         MaterialTheme {
             if (!hasStarted) {
-                val message by remember { messageState }
-                val inputArea by remember { inputState }
-
                 SetUpScreen(
-                    messageArea = { Text("$message, World!") },
+                    messageArea =  messageArea,
                     inputArea = inputArea
                 )
             } else {
@@ -85,7 +79,7 @@ class Game {
      * @return the name of the button that was clicked
      */
     fun buttonInput(message: String, vararg buttonNames: String): String {
-        messageState.value = message
+        showMessage(message)
         val choice: String by lazy {
             var temp: String? = null
             inputState.value = {
@@ -100,6 +94,21 @@ class Game {
 
         return choice
     }
+
+    /**
+     * Shows a message to the user
+     * @param message the message to show
+     */
+    fun showMessage(message: String) {
+        messageState.value = { Text(message) }
+    }
+
+    /**
+     * Clears the message space
+     */
+    fun eraseMessage() {
+        messageState.value = null
+    }
 }
 
 
@@ -109,19 +118,20 @@ class Game {
  */
 @Composable
 internal fun SetUpScreen(
-    messageArea: (@Composable () -> Unit),
+    messageArea: (@Composable () -> Unit)? = null,
     inputArea: (@Composable () -> Unit)? = null
 ) {
-    Column {
-        messageArea()
-        inputArea.orDefault {
-            Box(Modifier.fillMaxSize()) {
-                Surface(
-                    Modifier.fillMaxSize(),
-                    color = AmbientContentColor.current.copy(red = 0.2f)
-                ) {}
-            }
-        }()
+    val mod = Modifier
+        .border(2.dp, AmbientContentColor.current.copy(0.2f))
+        .fillMaxWidth()
+
+    Column(Modifier.padding(5.dp)) { //TODO fix the maximum height of each area
+        Box(mod.preferredHeightIn(min=80.dp, max=100.dp)) {
+            messageArea.orDefault { Box {} }()
+        }
+        Box(mod.wrapContentHeight()) {
+            inputArea.orDefault { Box {} }()
+        }
     }
 }
 
@@ -136,5 +146,8 @@ internal fun GameScreen() {
     }
 }
 
-
+/**
+ * A utility extension function to provide a default value if a null is received.
+ * @param default the value to use in case of nulls
+ */
 internal fun <T> T?.orDefault(default: T): T = this ?: default
