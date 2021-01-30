@@ -3,19 +3,13 @@ package ui
 import androidx.compose.desktop.Window
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.AmbientContentColor
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.*
-import kotlin.concurrent.thread
-import kotlin.properties.Delegates
 
 
 /**
@@ -37,7 +31,7 @@ class Game {
     /**
      * This State contains the composable representing the currently visible inputmethod
      */
-    private val inputState: MutableState<(@Composable () -> Unit)?> = mutableStateOf( null )
+    private val inputState: MutableState<(@Composable () -> Unit)?> = mutableStateOf(null)
 
     /**
      * This function starts the gui window and allows the game to begin
@@ -53,7 +47,7 @@ class Game {
         MaterialTheme {
             if (!hasStarted) {
                 SetUpScreen(
-                    messageArea =  messageArea,
+                    messageArea = messageArea,
                     inputArea = inputArea
                 )
             } else {
@@ -80,19 +74,26 @@ class Game {
      */
     fun buttonInput(message: String, vararg buttonNames: String): String {
         showMessage(message)
-        val choice: String by lazy {
-            var temp: String? = null
-            inputState.value = {
-                Buttons(*buttonNames) {
-                    inputState.value = null
-                    temp = it
-                }
+        return getInput { onClick ->
+            Buttons(*buttonNames) { name ->
+                onClick(name)
             }
-            while (temp == null) Thread.sleep(100)
-            temp!!
         }
+    }
 
-        return choice
+    /**
+     * This method makes a text field in which the user can write any text they like
+     *
+     * @param message a string to be shown to the user, this should explain what kind of choice is made
+     * @return The text written by the user.
+     */
+    fun textInput(message: String): String {
+        showMessage(message)
+        return getInput { onAccept ->
+            EditText { text ->
+                onAccept(text)
+            }
+        }
     }
 
     /**
@@ -108,6 +109,22 @@ class Game {
      */
     fun eraseMessage() {
         messageState.value = null
+    }
+
+
+    private fun getInput(uiComponent: (@Composable ((str: String) -> Unit) -> Unit)): String {
+        val choice: String by lazy {
+            var temp: String? = null
+            inputState.value = {
+                uiComponent {
+                    inputState.value = null
+                    temp = it
+                }
+            }
+            while (temp == null) Thread.sleep(100)
+            temp!!
+        }
+        return choice
     }
 }
 
@@ -126,7 +143,7 @@ internal fun SetUpScreen(
         .fillMaxWidth()
 
     Column(Modifier.padding(5.dp)) { //TODO fix the maximum height of each area
-        Box(mod.preferredHeightIn(min=80.dp, max=100.dp)) {
+        Box(mod.preferredHeightIn(min = 80.dp, max = 100.dp)) {
             messageArea.orDefault { Box {} }()
         }
         Box(mod.wrapContentHeight()) {
