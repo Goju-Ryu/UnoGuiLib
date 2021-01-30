@@ -1,20 +1,18 @@
-import androidx.compose.desktop.Window
-import androidx.compose.material.Text
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import ui.Game
 
-fun main() = Window {
-    var text by remember { mutableStateOf("Hello, World!") }
+/**
+ * This method exists for ease of development and should not be used outside of testing purposes
+ */
+fun main() {
+    val game = Game()
+    game.startGui()
 
-    MaterialTheme {
-        Button(onClick = {
-            text = "Hello, Desktop!"
-        }) {
-            Text(text)
-        }
-    }
+    val choice = game.buttonInput("Choose a greeting","Hej", "Olloh")
+    println(choice)
+    game.showMessage("$choice, World!\n\nmulti line\n       string")
+    Thread.sleep(2000)
+
+
+    game.buttonInput("continue", "OK")
+    game.eraseMessage()
 }
