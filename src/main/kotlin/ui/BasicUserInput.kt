@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
  * The buttens will have a standard behavior that should depend only on the supplied name
  */
 @Composable
-internal fun Buttons(vararg buttonNames: String, buttonOnClick: ButtonOnClick = {}) {
+internal fun Buttons(onInputConfirmed: OnInputConfirmed, vararg buttonNames: String) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -24,7 +24,7 @@ internal fun Buttons(vararg buttonNames: String, buttonOnClick: ButtonOnClick = 
         horizontalArrangement = Arrangement.Center
     ) {
         for (name in buttonNames) {
-            Button(onClick = { buttonOnClick(name) }, Modifier.padding(5.dp)) {
+            Button(onClick = { onInputConfirmed(name) }, Modifier.padding(5.dp)) {
                 Text(name)
             }
         }
@@ -32,7 +32,7 @@ internal fun Buttons(vararg buttonNames: String, buttonOnClick: ButtonOnClick = 
 }
 
 @Composable
-internal fun EditText(buttonText: String = "Ok", singleLine: Boolean = true, onAccept: (String) -> Unit) {
+internal fun EditText(onInputConfirmed: OnInputConfirmed, buttonText: String = "Ok", singleLine: Boolean = true) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         val text = remember { mutableStateOf("") }
         TextField(
@@ -43,7 +43,7 @@ internal fun EditText(buttonText: String = "Ok", singleLine: Boolean = true, onA
                 .padding(5.dp)
                 .preferredWidth(400.dp)
         )
-        Button({ onAccept(text.value) }, Modifier.wrapContentSize()) {
+        Button({ onInputConfirmed(text.value) }, Modifier.wrapContentSize()) {
             Text(buttonText)
         }
     }
@@ -52,4 +52,4 @@ internal fun EditText(buttonText: String = "Ok", singleLine: Boolean = true, onA
 /**
  * A special onClickListener for buttons that takes the name of a button as an argument
  */
-internal typealias ButtonOnClick = (name: String) -> Unit
+internal typealias OnInputConfirmed = (name: String) -> Unit
