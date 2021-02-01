@@ -36,7 +36,7 @@ class Game {
      */
     fun startGui() = Window(
         title = "My Uno Game",
-        size = IntSize(1280, 1024)
+        size = IntSize(1280, 720),
     ) {
         val hasStarted by remember { hasStartedState }
         val messageArea by remember { messageState }
@@ -109,7 +109,13 @@ class Game {
         messageState.value = null
     }
 
-
+    /**
+     * This function takes a UI component and applies the logic for waiting for input to it.
+     * In this way it can take an arbitrary composable and make it into a public input api.
+     *
+     * @see buttonInput
+     * @see textInput
+     */
     private fun getInput(uiComponent: (@Composable ((str: String) -> Unit) -> Unit)): String {
         val choice: String by lazy {
             var temp: String? = null
