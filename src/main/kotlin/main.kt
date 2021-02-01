@@ -1,4 +1,4 @@
-import ui.Game
+import model.Game
 
 /**
  * This method exists for ease of development and should not be used outside of testing purposes
