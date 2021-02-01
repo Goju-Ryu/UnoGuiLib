@@ -1,18 +1,14 @@
 package ui
 
-import androidx.compose.desktop.Window
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.AmbientContentColor
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
-
-
 
 
 /**
@@ -53,4 +49,5 @@ internal fun GameScreen() {
  * A utility extension function to provide a default value if a null is received.
  * @param default the value to use in case of nulls
  */
-internal fun <T> T?.orDefault(default: T): T = this ?: default
+
+internal fun <T:  ( @Composable () -> Unit)?> T?.orDefault(default: T): T = this ?: default
