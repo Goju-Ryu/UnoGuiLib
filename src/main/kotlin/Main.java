@@ -1,4 +1,4 @@
-import ui.Game;
+import model.Game;
 
 
 /**
