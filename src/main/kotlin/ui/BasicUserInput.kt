@@ -55,7 +55,7 @@ internal fun DropDownMenu(onInputConfirmed: OnInputConfirmed, vararg options: St
     DropdownMenu(
         toggle =  { Button({expanded.value = !expanded.value}){ Text("Menu")} },
         expanded = expanded.value,
-        onDismissRequest = {},
+        onDismissRequest = {expanded.value = !expanded.value},
     ) {
         for (option in options) {
             DropdownMenuItem(onClick = {onInputConfirmed(option)}) {
