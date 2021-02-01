@@ -7,7 +7,11 @@ fun main() {
     val game = Game()
     game.startGui()
 
-    val choice = game.textInput("Write a message and i will write it back")
+    val choice = game.dropdownMenuInput(
+        "Choose a message and i will write it back",
+        "Hello", "Hola", "Hey", "Hi"
+
+    )
     println(choice)
     game.showMessage(choice)
 }

@@ -97,6 +97,16 @@ class Game {
         }
     }
 
+    fun dropdownMenuInput(message: String, vararg options: String): String {
+        showMessage(message)
+        return getInput { onAccept ->
+            DropDownMenu(
+                { option -> onAccept(option) },
+                *options
+            )
+        }
+    }
+
     /**
      * Shows a message to the user
      * @param message the message to show

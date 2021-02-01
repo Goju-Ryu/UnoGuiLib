@@ -1,9 +1,9 @@
 package ui
 
+import androidx.compose.foundation.Interaction
+import androidx.compose.foundation.InteractionState
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,6 +45,22 @@ internal fun EditText(onInputConfirmed: OnInputConfirmed, buttonText: String = "
         )
         Button({ onInputConfirmed(text.value) }, Modifier.wrapContentSize()) {
             Text(buttonText)
+        }
+    }
+}
+
+@Composable
+internal fun DropDownMenu(onInputConfirmed: OnInputConfirmed, vararg options: String) {
+    val expanded = remember {  mutableStateOf(true) }
+    DropdownMenu(
+        toggle =  { Button({expanded.value = !expanded.value}){ Text("Menu")} },
+        expanded = expanded.value,
+        onDismissRequest = {},
+    ) {
+        for (option in options) {
+            DropdownMenuItem(onClick = {onInputConfirmed(option)}) {
+                Text(option)
+            }
         }
     }
 }
