@@ -6,8 +6,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.IntSize
 import ui.*
-import ui.Buttons
-import ui.EditText
+import ui.InputButtons
+import ui.InputEditText
 import ui.GameScreen
 import ui.OnInputConfirmed
 import ui.SetUpScreen
@@ -75,7 +75,7 @@ class Game {
     fun buttonInput(message: String, vararg buttonNames: String): String {
         showMessage(message)
         return getInput { onClick ->
-            Buttons(
+            InputButtons(
                 { name -> onClick(name) },
                 *buttonNames
             )
@@ -91,7 +91,7 @@ class Game {
     fun textInput(message: String): String {
         showMessage(message)
         return getInput { onAccept ->
-            EditText({ text ->
+            InputEditText({ text ->
                 onAccept(text)
             })
         }
@@ -100,7 +100,7 @@ class Game {
     fun dropdownMenuInput(message: String, vararg options: String): String {
         showMessage(message)
         return getInput { onAccept ->
-            DropDownMenu(
+            InputDropDownMenu(
                 { option -> onAccept(option) },
                 *options
             )
