@@ -2,7 +2,7 @@ package ui
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.AmbientContentColor
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,14 +18,14 @@ import androidx.compose.ui.unit.sp
 @Composable
 internal fun SetUpScreen(
     messageArea: (@Composable () -> Unit)? = null,
-    inputArea: (@Composable () -> Unit)? = null
+    inputArea: (@Composable () -> Unit)? = null,
 ) {
     val mod = Modifier
-        .border(2.dp, AmbientContentColor.current.copy(0.2f))
+        .border(2.dp, LocalContentColor.current)
         .fillMaxWidth()
 
     Column(Modifier.padding(5.dp)) { //TODO fix the maximum height of each area
-        Box(mod.preferredHeightIn(min = 80.dp, max = 100.dp)) {
+        Box(mod.height(80.dp)) {
             messageArea.orDefault { Box {} }()
         }
         Box(mod.wrapContentHeight()) {
