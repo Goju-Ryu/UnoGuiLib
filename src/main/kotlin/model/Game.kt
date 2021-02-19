@@ -107,6 +107,16 @@ class Game {
         }
     }
 
+    fun checkboxInput(message: String, vararg options: String): List<String> {
+        showMessage(message)
+        return getInputList { onAccept ->
+            InputCheckBox(
+                { option -> onAccept(option) },
+                *options
+            )
+        }
+    }
+
     /**
      * Shows a message to the user
      * @param message the message to show
@@ -132,6 +142,29 @@ class Game {
     private fun getInput(uiComponent: (@Composable (OnInputConfirmed) -> Unit)): String {
         val choice: String by lazy {
             var temp: String? = null
+            inputState.value = {
+                uiComponent {
+                    inputState.value = null
+                    temp = it
+                }
+            }
+            while (temp == null) Thread.sleep(100)
+            temp!!
+        }
+        return choice
+    }
+
+
+    /**
+     * This function takes a UI component and applies the logic for waiting for input to it.
+     * In this way it can take an arbitrary composable and make it into a public input api.
+     *
+     * @see buttonInput
+     * @see textInput
+     */
+    private fun getInputList(uiComponent: (@Composable ((List<String>) -> Unit) -> Unit)): List<String> {
+        val choice: List<String> by lazy {
+            var temp: List<String>? = null
             inputState.value = {
                 uiComponent {
                     inputState.value = null

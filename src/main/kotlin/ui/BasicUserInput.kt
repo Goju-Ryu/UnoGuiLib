@@ -120,6 +120,10 @@ private fun DropDownMenuBar(onClick: () -> Unit, onInputConfirmed: OnInputConfir
 
 }
 
+@Composable
+internal fun InputCheckBox(onInputConfirmed: (List<String>) -> Unit, vararg options: String) {
+    TODO("Not yet implemented")
+}
 
 /**
  * A special onClickListener for buttons that takes the name of a button as an argument
