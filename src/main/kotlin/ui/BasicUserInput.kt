@@ -1,5 +1,6 @@
 package ui
 
+import androidx.compose.desktop.DesktopMaterialTheme
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -118,23 +119,25 @@ private fun DropDownMenuBar(onClick: () -> Unit, onInputConfirmed: OnInputConfir
 @Composable
 internal fun InputCheckBox(onInputConfirmed: (List<String>) -> Unit, vararg options: String) {
     val checkedOptions = remember{ mutableStateListOf<String>() }
-
-    Row {
+    Row(verticalAlignment = Alignment.CenterVertically) {
         for(option in options) {
-            Row(
-                Modifier.padding(horizontal = 5.dp),
-                verticalAlignment = Alignment.CenterVertically
+            Card(
+                Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
             ) {
-                val checked = remember { mutableStateOf(false) }
-                Text(option)
-                Checkbox(
-                    checked = checked.value,
-                    onCheckedChange = {
-                        checked.value = it
-                        if (it) checkedOptions.add(option) else checkedOptions.remove(option)
-                    },
-                    Modifier.padding(5.dp)
-                )
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    val checked = remember { mutableStateOf(false) }
+                    Text(option)
+                    Checkbox(
+                        checked = checked.value,
+                        onCheckedChange = {
+                            checked.value = it
+                            if (it) checkedOptions.add(option) else checkedOptions.remove(option)
+                        }
+                    )
+                }
             }
         }
         AcceptButton(onClick = {onInputConfirmed(checkedOptions)})
@@ -152,7 +155,7 @@ private fun AcceptButton(
         onClick = onClick,
         modifier
             .wrapContentSize()
-            .padding(horizontal = 5.dp),
+            .padding(5.dp),
         enabled = enabled
     ) {
         content()
