@@ -31,6 +31,8 @@ internal fun SetUpScreen(
         Box(mod.wrapContentHeight()) {
             inputArea.orDefault { Box {} }()
         }
+
+        Player(model.Player("Test") { PlayerImages.PlayerMan() }) //TODO remove
     }
 }
 
