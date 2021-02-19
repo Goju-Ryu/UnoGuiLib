@@ -1,12 +1,16 @@
 package ui
 
+import androidx.compose.desktop.DesktopMaterialTheme
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -46,7 +50,7 @@ internal fun InputEditText(onInputConfirmed: OnInputConfirmed, buttonText: Strin
                 .padding(5.dp)
                 .width(400.dp)
         )
-        Button({ onInputConfirmed(text.value) }, Modifier.wrapContentSize()) {
+        AcceptButton({ onInputConfirmed(text.value) }, Modifier.wrapContentSize()) {
             Text(buttonText)
         }
     }
@@ -107,21 +111,79 @@ private fun DropDownMenuBar(onClick: () -> Unit, onInputConfirmed: OnInputConfir
             Icon(Icons.Default.ArrowDropDown, "drop down button")
         }
 
-        Button(
-            onClick = { onInputConfirmed(selection!!) },
-            Modifier
-                .wrapContentSize()
-                .padding(horizontal = 5.dp),
-            enabled = selection != null
-        ) {
-            Text("Accept")
-        }
+        AcceptButton( onClick = {onInputConfirmed(selection!!)}, enabled = selection != null )
     }
 
 }
 
+@Composable
+internal fun InputCheckBox(onInputConfirmed: (List<String>) -> Unit, vararg options: String) {
+    val checkedOptions = remember{ mutableStateListOf<String>() }
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        for(option in options) {
+            Card(
+                Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    val checked = remember { mutableStateOf(false) }
+                    Text(option)
+                    Checkbox(
+                        checked = checked.value,
+                        onCheckedChange = {
+                            checked.value = it
+                            if (it) checkedOptions.add(option) else checkedOptions.remove(option)
+                        }
+                    )
+                }
+            }
+        }
+        AcceptButton(onClick = {onInputConfirmed(checkedOptions)})
+    }
+}
+
+@Composable
+private fun AcceptButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    content: @Composable () -> Unit = {Text("Accept")}
+) {
+    Button(
+        onClick = onClick,
+        modifier
+            .wrapContentSize()
+            .padding(5.dp),
+        enabled = enabled
+    ) {
+        content()
+    }
+}
 
 /**
  * A special onClickListener for buttons that takes the name of a button as an argument
  */
 internal typealias OnInputConfirmed = (name: String) -> Unit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -7,11 +7,11 @@ fun main() {
     val game = Game()
     game.startGui()
 
-    val choice = game.dropdownMenuInput(
+    val choice = game.checkboxInput(
         "Choose a message and i will write it back",
         "Hello", "Hola", "Hey", "Hi"
 
     )
     println(choice)
-    game.showMessage(choice)
+    game.showMessage(choice.joinToString())
 }
