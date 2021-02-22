@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.4.30"
-    id("org.jetbrains.compose") version "0.3.0-build154"
+    id("org.jetbrains.compose") version "0.3.0"
 }
 
 group = "me.goju-ryu"
@@ -30,6 +30,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "lib-uno-gui"
+            packageVersion = "1.0.0"
         }
     }
 }
