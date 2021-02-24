@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import model.Player
 
 
 /**
@@ -19,6 +21,7 @@ import androidx.compose.ui.unit.sp
 internal fun SetUpScreen(
     messageArea: (@Composable () -> Unit)? = null,
     inputArea: (@Composable () -> Unit)? = null,
+    players: SnapshotStateList<Player>
 ) {
     val mod = Modifier
         .border(2.dp, LocalContentColor.current)
@@ -32,7 +35,11 @@ internal fun SetUpScreen(
             inputArea.orDefault { Box {} }()
         }
 
-        Player(model.Player("Test") { PlayerImages.PlayerMan() }) //TODO remove
+        Row {
+            for (player in players) {
+                PlayerImageCard(player)
+            }
+        }
     }
 }
 
