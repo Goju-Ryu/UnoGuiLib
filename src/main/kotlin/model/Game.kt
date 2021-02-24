@@ -33,6 +33,10 @@ class Game {
      */
     private val inputState: MutableState<(@Composable () -> Unit)?> = mutableStateOf(null)
 
+    val players: MutableList<Player>
+            get() = playerListState
+    private val playerListState = mutableStateListOf<Player>()
+
     /**
      * This function starts the gui window and allows the game to begin
      */
@@ -48,7 +52,8 @@ class Game {
             if (!hasStarted) {
                 SetUpScreen(
                     messageArea = messageArea,
-                    inputArea = inputArea
+                    inputArea = inputArea,
+                    players = playerListState
                 )
             } else {
                 GameScreen()
