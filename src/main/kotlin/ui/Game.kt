@@ -27,14 +27,18 @@ internal fun SetUpScreen(
         .border(2.dp, LocalContentColor.current)
         .fillMaxWidth()
 
-    Column(Modifier.padding(5.dp)) { //TODO fix the maximum height of each area
+    Column(
+        modifier = Modifier.padding(5.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) { //TODO fix the maximum height of each area
         Box(mod.height(80.dp)) {
             messageArea.orDefault { Box {} }()
         }
         Box(mod.wrapContentHeight()) {
             inputArea.orDefault { Box {} }()
         }
-
+        Spacer(Modifier.weight(weight = 1f, fill = true))
         Row {
             for (player in players) {
                 PlayerImageCard(player)
