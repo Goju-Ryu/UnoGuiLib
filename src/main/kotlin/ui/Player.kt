@@ -26,17 +26,12 @@ import model.Player
 import ui.UserInput.ImageDropDownMenu
 
 @Composable
-internal fun PlayerImageCard(playerModel: Player) { //TODO handle long player names gracefully
+internal fun PlayerImageCardColorSelector(playerModel: Player) { //TODO handle long player names gracefully
     remember { playerModel } //TODO make it possible to scale
 
     ImageDropDownMenu(
         {
-            Card(Modifier.padding(5.dp)) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    playerModel.picture.value()
-                    Text(playerModel.name, fontStyle = MaterialTheme.typography.caption.fontStyle, fontSize = 16.sp)
-                }
-            }
+            PlayerImageCard(playerModel)
         }
     ) {
         val colors = listOf(Color.Black, Color.Magenta, Color.Green)
@@ -49,6 +44,16 @@ internal fun PlayerImageCard(playerModel: Player) { //TODO handle long player na
             ) {
                 PlayerImages.Default(color = color)
             }
+        }
+    }
+}
+
+internal fun PlayerImageCard(playerModel: Player) {
+    remember { playerModel }
+    Card(Modifier.padding(5.dp)) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            playerModel.picture.value()
+            Text(playerModel.name, fontStyle = MaterialTheme.typography.caption.fontStyle, fontSize = 16.sp)
         }
     }
 }

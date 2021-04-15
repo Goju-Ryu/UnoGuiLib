@@ -41,7 +41,7 @@ internal fun SetUpScreen(
         Spacer(Modifier.weight(weight = 1f, fill = true))
         Row {
             for (player in players) {
-                PlayerImageCard(player)
+                PlayerImageCardColorSelector(player)
             }
         }
     }
