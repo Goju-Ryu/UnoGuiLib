@@ -160,7 +160,7 @@ private fun AcceptButton(
 /**
  * A special onClickListener for buttons that takes the name of a button as an argument
  */
-internal typealias OnInputConfirmed = (name: String) -> Unit
+internal typealias OnInputConfirmed = (name: String) -> Unit  //Maybe give type parameter for the argument?
 
 
 

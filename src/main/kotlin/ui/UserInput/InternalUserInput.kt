@@ -22,14 +22,25 @@ internal fun ImageDropDownMenu(clickable: @Composable () -> Unit, options: @Comp
     val expanded = remember { mutableStateOf(false) }
     val flipExpanded = { expanded.value = !expanded.value }
 
-    Box {
-        Box(Modifier.clickable { flipExpanded() }) {
-            clickable()
-        }
+    ImageDropDownMenu(clickable, expanded.value, flipExpanded, options)
+}
+
+@Composable
+internal fun ImageDropDownMenu(
+    clickable: @Composable () -> Unit,
+    expanded: Boolean,
+    onDismissRequest: () -> Unit,
+    options: @Composable ColumnScope.() -> Unit
+) {
+    remember { expanded }
+
+
+    Box(Modifier.clickable { onDismissRequest() }) {
+        clickable()
 
         DropdownMenu(
-            expanded = expanded.value,
-            onDismissRequest = flipExpanded, // For some reason this seems to never be called. May be a Compose problem.
+            expanded = expanded,
+            onDismissRequest = onDismissRequest, // For some reason this seems to never be called. May be a Compose problem.
             content = options,
             modifier = Modifier.background(LocalContentColor.current.copy(0.2f))
         )
