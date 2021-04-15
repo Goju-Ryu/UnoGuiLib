@@ -48,6 +48,7 @@ internal fun PlayerImageCardColorSelector(playerModel: Player) { //TODO handle l
     }
 }
 
+@Composable
 internal fun PlayerImageCard(playerModel: Player) {
     remember { playerModel }
     Card(Modifier.padding(5.dp)) {
