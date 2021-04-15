@@ -28,11 +28,13 @@ import ui.UserInput.ImageDropDownMenu
 @Composable
 internal fun PlayerImageCardColorSelector(playerModel: Player) { //TODO handle long player names gracefully
     remember { playerModel } //TODO make it possible to scale
+    val expanded = remember { mutableStateOf(false) }
+    val onDismissRequest = { expanded.value = !expanded.value }
 
     ImageDropDownMenu(
-        {
-            PlayerImageCard(playerModel)
-        }
+        clickable = { PlayerImageCard(playerModel) },
+        expanded = expanded.value,
+        onDismissRequest = onDismissRequest
     ) {
         val colors = listOf(Color.Black, Color.Magenta, Color.Green)
 
@@ -40,7 +42,10 @@ internal fun PlayerImageCardColorSelector(playerModel: Player) { //TODO handle l
             Box(
                 Modifier
                     .padding(5.dp)
-                    .clickable { playerModel.picture.value = { PlayerImages.Default(color = color) } }
+                    .clickable {
+                        playerModel.picture.value = { PlayerImages.Default(color = color) }
+                        onDismissRequest()
+                    }
             ) {
                 PlayerImages.Default(color = color)
             }
